@@ -2,11 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { rest } from "msw";
 import { expect } from "@storybook/jest";
 
-import {
-  waitFor,
-  waitForElementToBeRemoved,
-  within,
-} from "@testing-library/react";
+import { waitFor, within } from "@testing-library/react";
 import { User } from "~/types";
 import { Homepage } from "./Homepage";
 
@@ -37,16 +33,19 @@ export const MockedSuccess: Story = {
 
     await step("Shows initial loading", async () => {
       await waitFor(
-        () => expect(canvas.queryByText(/Loading/)).not.toBeNull(),
+        async () => await expect(canvas.queryByText(/Loading/)).not.toBeNull(),
         { timeout: 4000 }
       );
     });
 
     await step("Hides initial loading", async () => {
-      await waitFor(() => expect(canvas.queryByText(/Loading/)).toBeNull(), {
-        timeout: 4000,
-        interval: 1000,
-      });
+      await waitFor(
+        async () => await expect(canvas.queryByText(/Loading/)).toBeNull(),
+        {
+          timeout: 4000,
+          interval: 1000,
+        }
+      );
     });
 
     await step("Shows list of users", async () => {
@@ -69,7 +68,7 @@ export const MockedError: Story = {
 
     await step("Shows initial loading", async () => {
       await waitFor(
-        () => expect(canvas.queryByText(/Loading/)).not.toBeNull(),
+        async () => await expect(canvas.queryByText(/Loading/)).not.toBeNull(),
         {
           timeout: 4000,
           interval: 1000,
@@ -78,17 +77,23 @@ export const MockedError: Story = {
     });
 
     await step("Hides initial loading", async () => {
-      await waitFor(() => expect(canvas.queryByText(/Loading/)).toBeNull(), {
-        timeout: 4000,
-        interval: 1000,
-      });
+      await waitFor(
+        async () => await expect(canvas.queryByText(/Loading/)).toBeNull(),
+        {
+          timeout: 4000,
+          interval: 1000,
+        }
+      );
     });
 
     await step("Shows error instead of list of users", async () => {
-      await waitFor(() => expect(canvas.queryByText("xdd1")).toBeNull(), {
-        timeout: 4000,
-        interval: 1000,
-      });
+      await waitFor(
+        async () => await expect(canvas.queryByText("xdd1")).toBeNull(),
+        {
+          timeout: 4000,
+          interval: 1000,
+        }
+      );
       expect(canvas.queryByText("xdd6")).toBeNull();
 
       await waitFor(
